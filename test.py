@@ -32,41 +32,41 @@
 #
 with open("PythonTest.txt", encoding="utf-8") as f:
     text = f.read().split('\n')
-words = []
+words = [j for i in text for j in i.split("\t")]
 en = []
 ru = []
-for i in text:
-    for j in i.split("\t"):
-        words.append(j)
 for word in words:
     if words.index(word) % 2 == 0 or words.index(word) == 0:
         en.append(word)
     else:
         ru.append(word.split(" ; "))
+
+
+def open_file_en(result):
+    with open("English.txt", "a", encoding="utf-8") as f:
+        f.write(result)
+
+
+def open_file_ru(result):
+    with open("Russian.txt", "a", encoding="utf-8") as f:
+        f.write(result)
+
+
 for key, value in zip(en, ru):
     if len(value) == 1 and key.count(";") == 0:
-        with open("English.txt", "a", encoding="utf-8") as f:
-            f.write(str(key) + "\n")
-        with open("Russian.txt", "a", encoding="utf-8") as f:
-            f.write(value[0] + "\n")
+        open_file_en(str(key) + "\n")
+        open_file_ru(value[0] + "\n")
     elif len(value) == 1 and key.count(";") >= 1:
         key1 = key.split(" ; ")
         for i in range(0, len(key1)):
-            with open("English.txt", "a", encoding="utf-8") as f:
-                f.write(str(key1[i])+"\n")
-            with open("Russian.txt", "a", encoding="utf-8") as f:
-                f.write(value[0] + "\n")
+            open_file_en(str(key1[i])+"\n")
+            open_file_ru(value[0] + "\n")
     elif len(value) > 1 and key.count(";") == 0:
-        with open("English.txt", "a", encoding="utf-8") as f:
-            f.write((key+"\n")*len(value))
-        with open("Russian.txt", "a", encoding="utf-8") as f:
-            f.write(str("\n".join(value)+"\n"))
+        open_file_en((key+"\n")*len(value))
+        open_file_ru(str("\n".join(value)+"\n"))
     else:
         key1 = key.split(" ; ")
         for i in range(0, len(key1)):
-            with open("English.txt", "a", encoding="utf-8") as f:
-                f.write((str(key1[i])+"\n")*len(value))
-            with open("Russian.txt", "a", encoding="utf-8") as f:
-                f.write(str("\n".join(value)+"\n"))
-
+            open_file_en((str(key1[i])+"\n")*len(value))
+            open_file_ru(str("\n".join(value)+"\n"))
 
